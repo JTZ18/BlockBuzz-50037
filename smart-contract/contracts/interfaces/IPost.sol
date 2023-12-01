@@ -11,7 +11,7 @@ import {PostType} from "../enums/PostType.sol";
  */
 interface IPost is IERC165, IERC725Y {
     /**
-     * @notice Gets the address of the post
+     * @notice Gets the address of the post's author
      */
     function author() external view returns (address);
 
