@@ -1,4 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config();
 
 // Add Web3Provider to HRE
 // eslint-disable-next-line no-undef
