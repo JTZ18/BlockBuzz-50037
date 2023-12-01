@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.9;
 
-// third party
 import {ERC725Y} from "@erc725/smart-contracts/contracts/ERC725Y.sol";
 import {IERC725Y} from "@erc725/smart-contracts/contracts/interfaces/IERC725Y.sol";
 import {LSP2Utils} from "@lukso/lsp-smart-contracts/contracts/LSP2ERC725YJSONSchema/LSP2Utils.sol";
 
-// local
 import {LSP2KeyUtil} from "./LSP2KeyUtil.sol";
 
 /**

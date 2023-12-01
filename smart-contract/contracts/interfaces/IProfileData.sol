@@ -1,6 +1,5 @@
 pragma solidity ^0.8.9;
 
-// External imports
 import {IERC165} from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import {IERC725Y} from "@erc725/smart-contracts/contracts/interfaces/IERC725Y.sol";
 

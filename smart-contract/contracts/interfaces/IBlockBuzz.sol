@@ -1,10 +1,8 @@
 pragma solidity ^0.8.9;
 
-// External imports
 import {ILSP8IdentifiableDigitalAsset} from "@lukso/lsp-smart-contracts/contracts/LSP8IdentifiableDigitalAsset/ILSP8IdentifiableDigitalAsset.sol";
 
-// Local imports
-import {PostType} from "./PostType.sol";
+import {PostType} from "../enums/PostType.sol";
 
 /**
  * @title BlockBuzz Interface
