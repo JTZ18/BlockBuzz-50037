@@ -9,7 +9,7 @@ bytes32 constant _INTERFACEID_POST = 0x0;
 bytes32 constant _INTERFACEID_PROFILE_DATA = 0x0;
 
 
-bytes32 constant _LIKES_MAP_KEY = 0x0;
+bytes12 constant _LIKES_MAP_KEY = 0x0;
 bytes32 constant _LIKES_ARRAY_KEY = 0x0;
 bytes32 constant _COMMENTS_MAP_KEY = 0x0;
 bytes32 constant _COMMENTS_ARRAY_KEY = 0x0;
