@@ -51,7 +51,7 @@ contract ERC725YEnumerableSetUtil is ERC725Y {
             arrayLength = abi.decode(arrayLengthData, (uint));
         }
 
-        uint newEntryIndex = arrayLength + 1; // 0 is sentinel value (array starts with 1)
+        uint128 newEntryIndex = uint128(arrayLength + 1); // 0 is sentinel value (array starts with 1)
         bytes32 newEntryAdressKeyName = LSP2Utils
             .generateArrayElementKeyAtIndex(_arrayKeyName, newEntryIndex);
 
@@ -67,7 +67,7 @@ contract ERC725YEnumerableSetUtil is ERC725Y {
         keys[2] = newEntryAdressKeyName;
         values[2] = bytes(abi.encode(_address));
 
-        setData(keys, values);
+        setDataBatch(keys, values);
 
         return true;
     }
@@ -84,10 +84,10 @@ contract ERC725YEnumerableSetUtil is ERC725Y {
         address _address
     ) public returns (bool) {
         // if the address is not in the enumerable set then return immediately to save gas cost
-        uint entryToDeleteIndex = getAddressIndexInEnumerableSet(
+        uint128 entryToDeleteIndex = uint128(getAddressIndexInEnumerableSet(
             _mapKeyNamePrefix,
             _address
-        );
+        ));
         if (entryToDeleteIndex == 0) {
             return false;
         }
@@ -98,7 +98,7 @@ contract ERC725YEnumerableSetUtil is ERC725Y {
         bytes32 addressToDeleteKeyName = LSP2Utils
             .generateArrayElementKeyAtIndex(_arrayKeyName, entryToDeleteIndex);
 
-        uint arrayLength = abi.decode(getData(_arrayKeyName), (uint));
+        uint128 arrayLength = uint128(abi.decode(getData(_arrayKeyName), (uint)));
         bytes32 lastAddressKeyName = LSP2Utils.generateArrayElementKeyAtIndex(
             _arrayKeyName,
             arrayLength
@@ -146,7 +146,7 @@ contract ERC725YEnumerableSetUtil is ERC725Y {
             values[indexCounter] = new bytes(0);
         }
 
-        setData(keys, values);
+        setDataBatch(keys, values);
 
         return true;
     }

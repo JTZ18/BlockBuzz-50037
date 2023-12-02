@@ -12,18 +12,18 @@ library ProfileDataFactory {
      * @notice Deploys a new ProfileData contract
      * @dev Creates a ProfileData instance, assigning it to a user and setting its owner.
      * @param _owner Address of the owning contract (usually a social media or identity management contract)
-     * @param _user Address of the user linked to this profile data
+     * @param _profile Address of the user linked to this profile data
      * @return address Address of the newly created ProfileData contract
      */
     function createProfileData(
         address _owner,
-        address _user
+        address _profile
     ) public returns (address) {
         return
             address(
                 new ProfileData(
                     _owner,
-                    _user
+                    _profile
                 )
             );
     }

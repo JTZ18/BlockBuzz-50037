@@ -8,14 +8,14 @@ import {IERC725Y} from "@erc725/smart-contracts/contracts/interfaces/IERC725Y.so
  * @dev Describes the profile data linked to a universal profile. Separate storage offers several advantages:
  * - Protects against data manipulation by universal profile owners.
  * - Reduces gas costs by avoiding the KeyManager.
- * - Simplifies user onboarding by requiring only CALL permission for the managing contract.
+ * - Simplifies profile onboarding by requiring only CALL permission for the managing contract.
  * - Presence of ProfileData instance implies successful registration.
  */
 interface IProfileData is IERC165, IERC725Y {
     /**
-     * @notice Gets the address of the linked user profile
+     * @notice Gets the address of the linked profile profile
      */
-    function user() external view returns (address);
+    function profile() external view returns (address);
 
     /**
      * @notice Gets the timestamp of profile creation
@@ -26,7 +26,7 @@ interface IProfileData is IERC165, IERC725Y {
      * @notice Determines if the profile authored a specific post
      * @param _postAddress Address of the post to check
      */
-    function isAuthorOf(address _postAddress) external view returns (bool);
+    function isProfileOf(address _postAddress) external view returns (bool);
 
     /**
      * @notice Associates a new post with the profile
@@ -53,38 +53,38 @@ interface IProfileData is IERC165, IERC725Y {
     function removeLike(address _postAddress) external;
 
     /**
-     * @notice Checks if a user is followed by the profile
-     * @param _userAddress Address of the user to check
+     * @notice Checks if a profile is followed by the profile
+     * @param _profileAddress Address of the profile to check
      */
-    function isFollowedBy(address _userAddress) external view returns (bool);
+    function isFollowedBy(address _profileAddress) external view returns (bool);
 
     /**
-     * @notice Adds a user to the profile's followers
-     * @param _userAddress Address of the new follower
+     * @notice Adds a profile to the profile's followers
+     * @param _profileAddress Address of the new follower
      */
-    function addFollower(address _userAddress) external;
+    function addFollower(address _profileAddress) external;
 
     /**
-     * @notice Removes a user from the profile's followers
-     * @param _userAddress Address of the follower to be removed
+     * @notice Removes a profile from the profile's followers
+     * @param _profileAddress Address of the follower to be removed
      */
-    function removeFollower(address _userAddress) external;
+    function removeFollower(address _profileAddress) external;
 
     /**
-     * @notice Checks if the profile is following a specific user
-     * @param _userAddress Address of the user to check
+     * @notice Checks if the profile is following a specific profile
+     * @param _profileAddress Address of the profile to check
      */
-    function isFollowerOf(address _userAddress) external view returns (bool);
+    function isFollowerOf(address _profileAddress) external view returns (bool);
 
     /**
-     * @notice Adds a user to the profile's followings
-     * @param _userAddress Address of the user to follow
+     * @notice Adds a profile to the profile's followings
+     * @param _profileAddress Address of the profile to follow
      */
-    function addFollowing(address _userAddress) external;
+    function addFollowing(address _profileAddress) external;
 
     /**
-     * @notice Removes a user from the profile's followings
-     * @param _userAddress Address of the following to be removed
+     * @notice Removes a profile from the profile's followings
+     * @param _profileAddress Address of the following to be removed
      */
-    function removeFollowing(address _userAddress) external;
+    function removeFollowing(address _profileAddress) external;
 }

@@ -1,9 +1,15 @@
 {
   "name": "hardhat-project",
   "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.5",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "dotenv": "^16.3.1",
+    "ethers": "^6.9.0",
     "hardhat": "^2.19.1"
+  },
+  "scripts": {
+    "node": "npx hardhat node",
+    "deploy-local": "npx hardhat run --network localhost scripts/deploy.js"
   },
   "dependencies": {
     "@erc725/erc725.js": "^0.21.3",

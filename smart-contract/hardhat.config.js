@@ -1,10 +1,11 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("@nomicfoundation/hardhat-ethers");
 require("dotenv").config();
 
 // Add Web3Provider to HRE
 // eslint-disable-next-line no-undef
 extendEnvironment(async (hre) => {
-  hre.Web3Provider = new hre.ethers.providers.Web3Provider(
+  hre.Web3Provider = new hre.ethers.BrowserProvider(
     hre.network.provider
   );
 });
@@ -37,11 +38,11 @@ module.exports = {
     currency: "USD",
   },
   networks: {
-    lukso: {
-      url: "https://rpc.testnet.lukso.network",
-      chainId: 4201,
-      accounts: [process.env.PRIVATE_KEY],
-    },
+    // lukso: {
+    //   url: "https://rpc.testnet.lukso.network",
+    //   chainId: 4201,
+    //   accounts: [process.env.PRIVATE_KEY],
+    // },
     hardhat: {
       chainId: 1337,
     },

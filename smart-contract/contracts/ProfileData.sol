@@ -24,25 +24,25 @@ contract ProfileData is
     IProfileData,
     ERC725YEnumerableSetUtil
 {
-    address public user; // Universal profile
+    address public profile; // Universal profile
     uint public timestamp;
 
     /**
      * @dev Initializes the profile data contract.
      * @param _ownerAddress Owner of the profile data
-     * @param _userAddress User linked to this profile data
+     * @param _profileAddress Profile linked to this profile data
      */
-    constructor(address _ownerAddress, address _userAddress)
+    constructor(address _ownerAddress, address _profileAddress)
         ERC725YEnumerableSetUtil(_ownerAddress)
     {
-        user = _userAddress;
+        profile = _profileAddress;
         timestamp = block.timestamp;
     }
 
     /**
      * @inheritdoc IProfileData
      */
-    function isAuthorOf(address _postAddress) external view returns (bool) {
+    function isProfileOf(address _postAddress) external view returns (bool) {
         return isAddressInEnumerableSet(_POSTS_MAP_KEY, _postAddress);
     }
 
@@ -89,58 +89,58 @@ contract ProfileData is
     /**
      * @inheritdoc IProfileData
      */
-    function isFollowedBy(address _userAddress) external view returns (bool) {
-        return isAddressInEnumerableSet(_FOLLOWERS_MAP_KEY, _userAddress);
+    function isFollowedBy(address _profileAddress) external view returns (bool) {
+        return isAddressInEnumerableSet(_FOLLOWERS_MAP_KEY, _profileAddress);
     }
 
     /**
      * @inheritdoc IProfileData
      */
-    function addFollower(address _userAddress) external onlyOwner {
+    function addFollower(address _profileAddress) external onlyOwner {
         addElementToEnumerableSet(
             _FOLLOWERS_MAP_KEY,
             _FOLLOWERS_ARRAY_KEY,
-            _userAddress
+            _profileAddress
         );
     }
 
     /**
      * @inheritdoc IProfileData
      */
-    function removeFollower(address _userAddress) external onlyOwner {
+    function removeFollower(address _profileAddress) external onlyOwner {
         removeElementFromEnumerableSet(
             _FOLLOWERS_MAP_KEY,
             _FOLLOWERS_ARRAY_KEY,
-            _userAddress
+            _profileAddress
         );
     }
 
     /**
      * @inheritdoc IProfileData
      */
-    function isFollowerOf(address _userAddress) external view returns (bool) {
-        return isAddressInEnumerableSet(_FOLLOWING_MAP_KEY, _userAddress);
+    function isFollowerOf(address _profileAddress) external view returns (bool) {
+        return isAddressInEnumerableSet(_FOLLOWING_MAP_KEY, _profileAddress);
     }
 
     /**
      * @inheritdoc IProfileData
      */
-    function addFollowing(address _userAddress) external onlyOwner {
+    function addFollowing(address _profileAddress) external onlyOwner {
         addElementToEnumerableSet(
             _FOLLOWING_MAP_KEY,
             _FOLLOWING_ARRAY_KEY,
-            _userAddress
+            _profileAddress
         );
     }
 
     /**
      * @inheritdoc IProfileData
      */
-    function removeFollowing(address _userAddress) external onlyOwner {
+    function removeFollowing(address _profileAddress) external onlyOwner {
         removeElementFromEnumerableSet(
             _FOLLOWING_MAP_KEY,
             _FOLLOWING_ARRAY_KEY,
-            _userAddress
+            _profileAddress
         );
     }
 

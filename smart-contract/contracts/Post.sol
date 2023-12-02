@@ -19,7 +19,7 @@ import "./utils/BlockBuzzConstants.sol";
  */
 contract Post is IPost, ERC725YEnumerableSetUtil {
     uint public timestamp;
-    address public author;
+    address public profile;
     PostType public postType;
     address public referencedPost;
 
@@ -27,14 +27,14 @@ contract Post is IPost, ERC725YEnumerableSetUtil {
      * @notice Sets the contract variables and the ERC725Y JSONURL key that references the post
      * @dev Initializes a new post with specified details.
      * @param _ownerAddress Owner address of the post
-     * @param _authorAddress Author address of the post
+     * @param _profileAddress Profile address of the post
      * @param _postType Type of the post (MAIN, COMMENT)
      * @param _content JSON URL formatted content according to LSP2
      * @param _referencedPostAddress Address of the post referenced (if applicable)
      */
     constructor(
         address _ownerAddress,
-        address _authorAddress,
+        address _profileAddress,
         PostType _postType,
         bytes memory _content,
         address _referencedPostAddress
@@ -47,7 +47,7 @@ contract Post is IPost, ERC725YEnumerableSetUtil {
             "Target post address must support the POST interface (ERC165)"
         );
 
-        author = _authorAddress;
+        profile = _profileAddress;
         postType = _postType;
         referencedPost = _postType == PostType.MAIN
             ? address(0)
@@ -56,7 +56,7 @@ contract Post is IPost, ERC725YEnumerableSetUtil {
 
         setData(
             _LSP8_TOKEN_ID_METADATA_MINTED_BY,
-            abi.encode(_authorAddress)
+            abi.encode(_profileAddress)
         );
         setData(
             _LSP8_TOKEN_ID_METADATA_TOKEN_ID,

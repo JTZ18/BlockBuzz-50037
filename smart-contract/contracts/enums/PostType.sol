@@ -7,5 +7,5 @@ pragma solidity ^0.8.9;
  */
 enum PostType {
     MAIN,
-    COMMENT,
+    COMMENT
 }
