@@ -1,0 +1,14 @@
+{
+  "LSP4Metadata": {
+      "description": "BlockBuzz Feed",
+      "links": [
+          {
+              "title": "Website",
+              "url": "https://blockbuzz.vercel.app/"
+          }
+      ],
+      "icon": [],
+      "images": [],
+      "assets": []
+  }
+}

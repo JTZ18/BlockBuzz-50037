@@ -32,17 +32,25 @@ extendEnvironment(async (hre) => {
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: "0.8.19",
+  solidity: {
+    version: "0.8.19",
+    settings: {
+        optimizer: {
+            enabled: true,
+            runs: 10000,
+        },
+    },
+  },
   gasReporter: {
     enabled: true,
     currency: "USD",
   },
   networks: {
-    // lukso: {
-    //   url: "https://rpc.testnet.lukso.network",
-    //   chainId: 4201,
-    //   accounts: [process.env.PRIVATE_KEY],
-    // },
+    lukso: {
+      url: "https://rpc.testnet.lukso.network",
+      chainId: 4201,
+      accounts: [process.env.PRIVATE_KEY],
+    },
     hardhat: {
       chainId: 1337,
     },

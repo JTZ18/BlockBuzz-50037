@@ -26,7 +26,7 @@ import "./utils/BlockBuzzConstants.sol";
  */
 contract BlockBuzz is
     IBlockBuzz,
-    LSP8IdentifiableDigitalAsset("BlockBuzzPost", "BBP", msg.sender, 2, 1) // TODO: need to find out 
+    LSP8IdentifiableDigitalAsset("BlockBuzzPost", "BBP", msg.sender, 2, 1) // TODO: need to find out
 {
     mapping(address => address) public registeredUsers; // mapping from universal profile to social network profile data
     uint public registeredUserCount = 0; // incremented with each registration
@@ -282,7 +282,6 @@ contract BlockBuzz is
      */
     function commentPost(
         bytes calldata _data,
-        address[] calldata _taggedUsers,
         address _referencePost
     )
         external

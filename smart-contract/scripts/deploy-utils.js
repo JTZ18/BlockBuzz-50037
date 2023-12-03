@@ -108,7 +108,7 @@ const deployBlockBuzzWithLinkedLibraries = async (constructorParam) => {
     const lsp2KeyUtil = await deployLSP2KeyUtil();
     const PostFactory = await deployPostFactory(lsp2KeyUtil);
     const ProfileDataFactory = await deployProfileDataFactory(lsp2KeyUtil);
-    const BlockBuzz = await deployBlockBuzz(constructorParam, PostFactory, ProfileDataFactory);
+    const blockBuzz = await deployBlockBuzz(constructorParam, PostFactory, ProfileDataFactory);
 
     return {
         blockBuzz,
