@@ -1,141 +1,126 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import type { JSX } from "react";
+import { useTheme } from "next-themes";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 // import ButtonSignin from "./ButtonSignin";
 import logo from "@/app/icon.png";
+import Container from "./ui/container";
+import { Button } from "./ui/button";
+import { Menu, Moon, ShoppingCart, Sun } from "lucide-react";
+import {Sheet,
+  SheetPortal,
+  SheetOverlay,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription, } from "./ui/sheet";
+import ProfileButton from "./ui/ProfileButton";
+import ConnectWalletButton from "./ConnectWalletButton";
+import { IWeb3Context, useWeb3Context } from '../context/Web3Context'
+import ConnectUniversalProfileButton from "./ConnectUniversalProfileButton";
+import EthersContext from "../context/EthersContext/EthersContext";
 
 
-// const cta: JSX.Element = <ButtonSignin extraStyle="btn-primary" />; // TODO: toggle dark mode light mode
-
-// A header with a logo on the left, links in the center (like Pricing, etc...), and a CTA (like Get Started or Login) on the right.
-// The header is responsive, and on mobile, the links are hidden behind a burger button.
 const Header = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { theme, setTheme } = useTheme()
 
-  // setIsOpen(false) when the route changes (i.e: when the user clicks on a link on mobile)
+  // const {
+  //   connectWallet,
+  //   disconnect,
+  //   state: { isAuthenticated, address, currentChain, provider },
+  // } = useWeb3Context() as IWeb3Context;
+
+  const { universalProfile } = useContext(EthersContext)
+
   useEffect(() => {
     setIsOpen(false);
   }, [searchParams]);
 
+  useEffect(() => {
+    console.log(universalProfile)
+  }, [universalProfile])
+
+  const routes = [
+    {
+      href: "/",
+      label: "Home"
+    },
+    {
+      href: "/profile",
+      label: "Profile"
+    },
+    {
+      href: "/forYou",
+      label: "For You"
+    }
+  ]
+
   return (
-    <header className="bg-base-200">
-      <nav
-        className="container flex items-center justify-between px-8 py-4 mx-auto"
-        aria-label="Global"
-      >
-        {/* Your logo/name on large screens */}
-        <div className="flex lg:flex-1">
-          <Link
-            className="flex items-center gap-2 shrink-0 "
-            href="/"
-            title={`hompage`}
-          >
-            <Image
-              src={logo}
-              alt={`logo`}
-              className="w-8"
-              placeholder="blur"
-              priority={true}
-              width={32}
-              height={32}
-            />
-            <span className="font-extrabold text-lg">BlockBuzz</span>
-          </Link>
-        </div>
-        {/* Burger button to open menu on mobile */}
-        <div className="flex lg:hidden">
-          <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5"
-            onClick={() => setIsOpen(true)}
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6 text-base-content"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
-            </svg>
-          </button>
-        </div>
-        {/* CTA on large screens */}
-        {/* <div className="hidden lg:flex lg:justify-end lg:flex-1">{cta}</div> */}
-        <label className="flex cursor-pointer gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
-          <input type="checkbox" value="night" className="toggle theme-controller"/>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-        </label>
-      </nav>
-
-      {/* Mobile menu, show/hide based on menu state. */}
-      <div className={`relative z-50 ${isOpen ? "" : "hidden"}`}>
-        <div
-          className={`fixed inset-y-0 right-0 z-10 w-full px-8 py-4 overflow-y-auto bg-base-200 sm:max-w-sm sm:ring-1 sm:ring-neutral/10 transform origin-right transition ease-in-out duration-300`}
-        >
-          {/* Your logo/name on small screens */}
-          <div className="flex items-center justify-between">
-            <Link
-              className="flex items-center gap-2 shrink-0 "
-              title={`hompage`}
-              href="/"
-            >
-              <Image
-                src={logo}
-                alt={`logo`}
-                className="w-8"
-                placeholder="blur"
-                priority={true}
-                width={32}
-                height={32}
-              />
-              <span className="font-extrabold text-lg">BlockBuzz</span>
+    <header className="sm:flex sm:justify-between py-3 px-4 border-b">
+      <Container>
+        <div className="relative px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between w-full">
+          <div className="flex items-center">
+            <Sheet>
+              <SheetTrigger>
+                <Menu className="h-6 md:hidden w-6" />
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                <nav className="flex flex-col gap-4">
+                  {routes.map((route, i) => (
+                    <Link
+                      key={i}
+                      href={route.href}
+                      className="block px-2 py-1 text-lg"
+                    >
+                      {route.label}
+                    </Link>
+                  ))}
+                </nav>
+              </SheetContent>
+            </Sheet>
+            <Link href="/" className="ml-4 lg:ml-0">
+              <h1 className="text-xl font-bold">BlockBuzz</h1>
             </Link>
-            <button
-              type="button"
-              className="-m-2.5 rounded-md p-2.5"
-              onClick={() => setIsOpen(false)}
-            >
-              <span className="sr-only">Close menu</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
           </div>
-
-          {/* Your links on small screens */}
-          <div className="flow-root mt-6">
-            <div className="py-4">
-            </div>
-            <div className="divider"></div>
-            {/* Your CTA on small screens */}
-            {/* <div className="flex flex-col">{cta}</div> */}
+          <nav className="mx-6 flex items-center space-x-4 lg:space-x-6 hidden md:block">
+            {routes.map((route, i) => (
+              <Button key={i} asChild variant="ghost">
+                <Link
+                  key={i}
+                  href={route.href}
+                  className="text-sm font-medium transition-colors"
+                >
+                  {route.label}
+                </Link>
+              </Button>
+            ))}
+          </nav>
+          <div className="flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Toggle Theme"
+              className="mr-6"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              <Sun className="h-6 w-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <span className="sr-only">Toggle Theme</span>
+            </Button>
+            {/* {isAuthenticated ? <ProfileButton /> : <ConnectWalletButton />} */}
+            {universalProfile ? <ProfileButton /> : <ConnectUniversalProfileButton />}
           </div>
         </div>
-      </div>
+      </Container>
     </header>
   );
 };
