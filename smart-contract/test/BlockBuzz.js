@@ -22,20 +22,16 @@ const {
 describe("", () => {
   const deployFixture = async () => {
     const constructorParam = ethers.getBytes(
-        // FIXME: ??
       "0x6f357c6ad575b7fd3a648e998af8851efb8fc396805b73a3f72016df79dfedce79c76a53697066733a2f2f516d6563726e6645464c4d64573642586a4a65316e76794c6450655033435967516258774e6d593850374c666553"
     );
     const deployedBlockBuzzWithLinkedLibraries =
       await deployBlockBuzzWithLinkedLibraries(constructorParam);
 
-    console.log("oke")
     const ownerAndUniversalProfiles = await getOwnerAndUniversalProfiles(
       deployedBlockBuzzWithLinkedLibraries.blockBuzz
     );
 
-    console.log("oke2")
     const randomPostContent = ethers.utils.toUtf8Bytes("");
-    console.log("oke3")
 
     return {
       ...ownerAndUniversalProfiles,
