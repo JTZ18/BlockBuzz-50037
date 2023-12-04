@@ -44,14 +44,14 @@ const deployPostFactoryTestWithLinkedLibraries = async () => {
     return await PostFactoryTest.deploy();
 };
 
-const deployPostWithLinkedLibraries = async (owner, author, postType, taggedUsers, data, referencedPost) => {
+const deployPostWithLinkedLibraries = async (owner, profile, postType, content, referencedPost) => {
     const deployedLSP2KeyUtil = await deployLSP2KeyUtil();
     const Post = await ethers.getContractFactory("Post", {
         libraries: {
             LSP2KeyUtil: deployedLSP2KeyUtil.target,
         }
     });
-    return await Post.deploy(owner, author, postType, taggedUsers, data, referencedPost);
+    return await Post.deploy(owner, profile, postType, taggedUsers, content, referencedPost);
 };
 
 const deployProfileDataFactory = async (deployedLSP2KeyUtil) => {
@@ -125,8 +125,10 @@ module.exports = {
     deployERC725YEnumerableSetUtilWithLinkedLibraries,
     deployPostFactory,
     deployPostWithLinkedLibraries,
+    deployPostFactoryTestWithLinkedLibraries,
     deployProfileDataFactory,
     deployProfileDataWithLinkedLibraries,
+    deployProfileDataFactoryTestWithLinkedLibraries,
     deployBlockBuzz,
     deployBlockBuzzWithLinkedLibraries
 };
