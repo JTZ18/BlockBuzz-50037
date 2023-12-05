@@ -63,7 +63,7 @@ export const fetchSocialProfileStatsByUniversalProfileAddress = async (
         "SNLikes[]",
         "SNSubscriptions[]",
         "SNSubscribers[]",
-        "SNUserTags[]",
+        // "SNUserTags[]",
       ]
     );
     const socialNetworkProfileData = await socialNetworkProfileDataContract[

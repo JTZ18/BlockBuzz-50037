@@ -1,24 +1,24 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   images: {
-    domains: ['www.nawpic.com'],
+    domains: ['www.nawpic.com', 'api.universalprofile.cloud'],
   },
-  transpilePackages: ['lucide-react'],
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        'node-fetch': require.resolve('isomorphic-fetch'),
-        'stream': require.resolve('stream-browserify'),
-        'util': require.resolve('util'),
-      };
-    }
-    return config;
-  },
+  // transpilePackages: ['lucide-react'],
+  // webpack: (config, { isServer }) => {
+  //   if (!isServer) {
+  //     config.resolve.fallback = {
+  //       ...config.resolve.fallback,
+  //       'node-fetch': require.resolve('isomorphic-fetch'),
+  //       'stream': require.resolve('stream-browserify'),
+  //       'util': require.resolve('util'),
+  //     };
+  //   }
+  //   return config;
+  // },
   experimental: {
-    serverComponentsExternalPackages: ['isomorphic-fetch', 'stream-browserify', 'util'],
+    serverComponentsExternalPackages: ['ipfs-utils'],
   },
 }
 module.exports = nextConfig;

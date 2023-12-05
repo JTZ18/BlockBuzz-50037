@@ -81,9 +81,9 @@ export const isValidPost = async (address: string): Promise<boolean> => {
 export const fetchPost = async (
   address: string
 ): Promise<null | SocialNetworkPost> => {
-  if (!(await isValidPost(address))) {
-    return null
-  };
+  // if (!(await isValidPost(address))) {
+  //   return null
+  // };
 
   try {
     const socialNetworkPostContract = createSocialNetworkPostContract(address);
@@ -114,9 +114,9 @@ export const fetchPost = async (
       image = `${IPFS_GATEWAY}/${imageHash}`;
     }
 
-    const taggedUsers: string[] =
-      ((await socialNetworkPostERC725Contract.fetchData("SNUserTags[]"))
-        ?.value as string[]) ?? [];
+    const taggedUsers: string[] = [];
+      // ((await socialNetworkPostERC725Contract.fetchData("SNUserTags[]"))
+      //   ?.value as string[]) ?? [];
 
     const socialNetworkPostStats = await fetchSocialNetworkPostStats(address);
 
@@ -145,7 +145,6 @@ export const fetchSocialNetworkPostStats = async (
 
   const keys = getKeysForNamesFromSchema(SocialNetworkPostERC725YJSONSchema, [
     "SNLikes[]",
-    "SNShares[]",
     "SNComments[]",
   ]);
   const socialNetworkPost = await socialNetworkPostContract[
@@ -154,7 +153,7 @@ export const fetchSocialNetworkPostStats = async (
 
   return {
     likes: parseInt(socialNetworkPost[0]) || 0,
-    shares: parseInt(socialNetworkPost[1]) || 0,
+    shares: 0,
     comments: parseInt(socialNetworkPost[2]) || 0,
   };
 };

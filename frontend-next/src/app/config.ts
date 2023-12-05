@@ -1,7 +1,8 @@
 // Crypto
 import { ethers } from "ethers";
 
-export const IPFS_UPLOAD_GATEWAY: string = "https://api.2eff.lukso.dev/api/v0";
+// export const IPFS_UPLOAD_GATEWAY: string = "https://api.2eff.lukso.dev/api/v0";
+export const IPFS_UPLOAD_GATEWAY : string = "https://turquoise-accessible-ferret-288.mypinata.cloud"
 export const IPFS_GATEWAY: string = "https://api.universalprofile.cloud/ipfs";
 export const CHAIN_ID: string = ethers.utils.hexValue(4201);
 export const RPC_URL: string = "https://rpc.testnet.lukso.network";

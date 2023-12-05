@@ -153,6 +153,7 @@ export const initAuthenticatedProfile = async (
 
 export const fetchProfile = async (
   address: string
+  // isInProfilePage?: boolean
 ): Promise<null | SocialNetworkProfile> => {
   if (!ethers.utils.isAddress(address)) return null;
 
