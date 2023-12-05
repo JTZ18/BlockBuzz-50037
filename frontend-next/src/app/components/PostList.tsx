@@ -121,23 +121,28 @@ const PostList: React.FC<PostListProps> = ({  }) => {
 
   // run get postsData from addresses
   const getPosts = async () => {
-    setIsLoading(true)
-    console.log("im clicked")
+    setIsLoading(true);
+    console.log("I'm clicked");
     const page = await fetchPostAddresses();
-    console.log(page)
+    console.log(page);
     if (page?.items) {
       const addresses = Object.values(page.items);
-      console.log("addresses: " + addresses)
-      let retrievedPostsArray: (SocialNetworkPost | null)[] = [];
-      for (let address of addresses) {
-        const post = await getPost(address);
-        retrievedPostsArray = [...retrievedPostsArray, post];
-        setPosts([...retrievedPostsArray]);
-        console.log([...retrievedPostsArray]);
+      console.log("addresses: " + addresses);
+
+      try {
+        // Map each address to a getPost promise
+        const promises = addresses.map(address => getPost(address));
+        // Wait for all promises to resolve
+        const retrievedPostsArray = await Promise.all(promises);
+        // Set the state with all retrieved posts
+        setPosts(retrievedPostsArray);
+        console.log("postsData: ", retrievedPostsArray);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        // Handle any errors that occurred during fetch
       }
-      console.log("postsData: ", retrievedPostsArray)
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   usePullToRefresh(getPosts)
@@ -150,23 +155,17 @@ const PostList: React.FC<PostListProps> = ({  }) => {
   // run get postsData from addresses
 
   return (
-    <div className="flex items-center flex-col justify-center space-y-4 mt-4">
-      <Button onClick={getPosts}>Get Posts</Button>
-
+    <div className="flex flex-col items-center justify-center space-y-4 mt-4">
+      {/* <Button onClick={getPosts}>Get Posts</Button> */}
       <AddPost />
 
       <div className="grid grid-col-1 gap4">
         {posts?.map((item) => (
           <PostCard key={item?.address} data={item} />
         ))}
-        {isLoading && (
-          <div className="">
-            <Skeleton className="aspect-square rounded-xl max-w-2xl my-4"/>
-            <Skeleton className="aspect-square rounded-xl max-w-2xl my-4"/>
-            <Skeleton className="aspect-square rounded-xl max-w-2xl my-4"/>
-          </div>
-        )}
       </div>
+      
+      {isLoading && (<Skeleton className="aspect-square rounded-xl w-full"/>)}
     </div>
   );
 };

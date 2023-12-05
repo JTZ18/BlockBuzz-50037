@@ -47,7 +47,7 @@ const AddComment: React.FC<Props> = ({ post }) => {
       {loading ? (
         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
       ) : (
-        <Button type="submit" variant='ghost' onClick={handlePost}>Post</Button>
+        <Button type="submit" variant='ghost' onClick={handlePost} disabled={authenticated ? false : true}>Post</Button>
       )}
     </div>
   );

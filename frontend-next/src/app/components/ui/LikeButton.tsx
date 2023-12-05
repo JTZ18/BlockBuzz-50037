@@ -5,6 +5,7 @@ import { Button } from "./button";
 import Container from './container';
 import { SocialNetworkPost } from '@/app/types/SocialNetworkPost';
 import EthersContext from '@/app/context/EthersContext/EthersContext';
+import CachedProfileAndPostsContext from '@/app/context/CachedProfilesAndPostsContext/CachedProfilesAndPostsContext';
 import { SocialNetwork } from '@/app/utils/social-network';
 import { Loader2 } from "lucide-react"
 
@@ -14,22 +15,24 @@ interface Props {
 
 const LikeButton: React.FC<Props> = ( { post } ) => {
   const { provider, universalProfile } = useContext(EthersContext);
+  const { posts, refetchPost } = useContext(CachedProfileAndPostsContext)
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentPost, setCurrentPost] = useState(post);
 
   const authenticated =
   provider &&
   universalProfile?.socialNetworkProfileDataContract &&
   universalProfile?.socialNetworkProfileDataERC725Contract &&
   universalProfile?.socialProfileStats &&
-  post?.author.toLowerCase() !== universalProfile?.address.toLowerCase();
+  currentPost?.author.toLowerCase() !== universalProfile?.address.toLowerCase();
 
   const fetchLikeStatus = async () => {
     if (!authenticated) return;
     try {
       setLiked(
         await universalProfile?.socialNetworkProfileDataContract?.hasLiked(
-          post.address
+          currentPost.address
         )
       );
     } catch (e) {
@@ -44,7 +47,7 @@ const LikeButton: React.FC<Props> = ( { post } ) => {
     try{
       if (
         await universalProfile?.socialNetworkProfileDataContract?.hasLiked(
-          post.address
+          currentPost.address
         )
       ) {
         setLiked(true);
@@ -52,10 +55,11 @@ const LikeButton: React.FC<Props> = ( { post } ) => {
         return;
       }
       const tx = await SocialNetwork.connect(provider.getSigner()).likePost(
-        post.address
+        currentPost.address
       );
       await tx.wait();
-      setLiked(true);
+      await refetchPost(currentPost.address)
+      setLiked(prev => !prev);
       setLoading(false)
     } catch (e) {
       setLoading(false);
@@ -68,7 +72,7 @@ const LikeButton: React.FC<Props> = ( { post } ) => {
     try{
       if (
         !(await universalProfile?.socialNetworkProfileDataContract?.hasLiked(
-          post.address
+          currentPost.address
         ))
       ) {
         setLiked(false);
@@ -77,9 +81,11 @@ const LikeButton: React.FC<Props> = ( { post } ) => {
       }
 
       const tx = await SocialNetwork.connect(provider.getSigner()).unlikePost(
-        post.address
+        currentPost.address
       );
       await tx.wait();
+      await refetchPost(currentPost.address)
+
       setLiked(false);
       setLoading(false)
     } catch (e) {
@@ -89,7 +95,15 @@ const LikeButton: React.FC<Props> = ( { post } ) => {
 
   useEffect(() => {
     fetchLikeStatus();
-  }, []);
+  }, [post]);
+
+  useEffect(() => {
+    const updatedPost = posts[currentPost.address];
+    if (updatedPost) {
+      fetchLikeStatus()
+      setCurrentPost(updatedPost)
+    }
+  }, [posts, authenticated]);
 
   return (
     <div>
@@ -105,6 +119,7 @@ const LikeButton: React.FC<Props> = ( { post } ) => {
         ) : (
           <Heart fill={liked ? "red" : ""} stroke={liked ? "red" : "white"} className='h-4 w-4' />
         )}
+        <p className="text-sm text-primary/80 ml-4">{currentPost?.likes}</p>
       </Button>
     </div>
   )

@@ -98,6 +98,18 @@ const CachedProfilesAndPostsContextProvider = ({
     setPosts(newPosts);
   };
 
+  const refetchPost = async (address: string) => {
+    console.log('enter refetchPost WOOOO')
+    const newPost = await fetchPost(address);
+    console.log('newPost', newPost)
+    if (newPost) {
+      setPosts((posts) => ({
+        ...posts,
+        [address]: newPost,
+      }));
+    }
+  }
+
   const refetchAll = async () => {
     await refetchProfiles();
     await refetchPosts();
@@ -118,6 +130,7 @@ const CachedProfilesAndPostsContextProvider = ({
         refetchAll,
         refetchPosts,
         refetchProfiles,
+        refetchPost
       }),
       [profiles, posts]
     );

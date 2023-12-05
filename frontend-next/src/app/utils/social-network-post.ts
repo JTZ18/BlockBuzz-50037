@@ -34,7 +34,7 @@ import type {
   SocialNetworkPost,
   SocialNetworkPostStats,
 } from "../types/SocialNetworkPost";
-import type { Page } from "../components/PagedList/PagedList";
+import type { Page } from "@/app/components/PagedList/PagedList";
 
 export const createSocialNetworkPostContract = (
   address: string
@@ -93,12 +93,15 @@ export const fetchPost = async (
 
     // use author UP address to get profile data
     const author = await socialNetworkPostContract.author();
-    const snp = await fetchProfile(author)
+    const snp = await fetchProfile(author, false)
     const profileImage = snp?.profileImage
     const profileName = snp?.name
 
-    const referencedPost = await socialNetworkPostContract.referencedPost();
     const type: PostType = await socialNetworkPostContract.postType();
+    let referencedPost = "";
+    if (type === 1) {
+      referencedPost = await socialNetworkPostContract.referencedPost();
+    }
 
     let content = "";
     let image = "";
@@ -145,7 +148,7 @@ export const fetchSocialNetworkPostStats = async (
 
   const keys = getKeysForNamesFromSchema(SocialNetworkPostERC725YJSONSchema, [
     "SNLikes[]",
-    "SNComments[]",
+    // "SNComments[]",
   ]);
   const socialNetworkPost = await socialNetworkPostContract[
     "getData(bytes32[])"
@@ -154,7 +157,7 @@ export const fetchSocialNetworkPostStats = async (
   return {
     likes: parseInt(socialNetworkPost[0]) || 0,
     shares: 0,
-    comments: parseInt(socialNetworkPost[2]) || 0,
+    comments: 0,
   };
 };
 

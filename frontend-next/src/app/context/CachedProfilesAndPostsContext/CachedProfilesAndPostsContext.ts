@@ -26,6 +26,7 @@ export interface CachedProfilesAndPostsContextValue {
   refetchAll: () => Promise<void>;
   refetchPosts: () => Promise<void>;
   refetchProfiles: () => Promise<void>;
+  refetchPost: (postAddress: string) => Promise<void>;
 }
 
 const CachedProfilesAndPostsContext =
@@ -42,6 +43,7 @@ const CachedProfilesAndPostsContext =
     refetchAll: async () => {},
     refetchPosts: async () => {},
     refetchProfiles: async () => {},
+    refetchPost: async () => {},
   });
 
 export default CachedProfilesAndPostsContext;

@@ -18,10 +18,6 @@ const KECCAK_256_HASH_FUNCTION = "0x6f357c6a";
 // https://api.2eff.lukso.dev/api/v0/add?stream-channels=true&pin=true&progress=false
 export const ipfsClient: IPFSHTTPClient = create({
   url: IPFS_UPLOAD_GATEWAY,
-  headers: {
-    'pinata_api_key': '9c66a3b3ec2cbf055d6e',
-    'pinata_secret_api_key': '666b7e4b2b21f5709562d08699da4f62175f5eb040ed4e405bd42a14887ccf91'
-  }
 });
 
 // see https://github.com/lukso-network/LIPs/blob/main/LSPs/LSP-2-ERC725YJSONSchema.md#JSONURL
