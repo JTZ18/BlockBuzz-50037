@@ -6,7 +6,7 @@ const BlockBuzzConstants = require("../constants/BlockBuzzConstants");
 
 const IERC165ABI = require("@openzeppelin/contracts/build/contracts/IERC165.json").abi;
 
-const { deployProfileDataWithLinkedLibraries } = require("../util/deploy");
+const { deployProfileDataWithLinkedLibraries } = require("../scripts/deploy-utils");
 
 describe("ProfileData", () => {
     const deployFixture = async () => {
@@ -36,7 +36,7 @@ describe("ProfileData", () => {
 
             const profileData = await createProfileData(accounts[1].address);
 
-            expect(await profileData.user()).to.eql(accounts[1].address);
+            expect(await profileData.profile()).to.eql(accounts[1].address);
         });
 
         it("Should set deployer's address as owner of post (owner != author)", async () => {

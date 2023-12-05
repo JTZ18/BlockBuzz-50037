@@ -13,9 +13,9 @@ async function main() {
 
   const constructorParam = hre.ethers.getBytes("0x6f357c6ad575b7fd3a648e998af8851efb8fc396805b73a3f72016df79dfedce79c76a53697066733a2f2f516d514c6361627352395a54554b65456435556937335132677846683579506e7565443275765456765059517138");
   const { blockBuzz } = await deployBlockBuzzWithLinkedLibraries(constructorParam);
-  await blockBuzz.waitForDeployment();
+  await blockBuzz.deployed();
 
-  console.log("BlockBuzz deployed to:", blockBuzz.target);
+  console.log("BlockBuzz deployed to:", blockBuzz.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

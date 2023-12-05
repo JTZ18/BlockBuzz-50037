@@ -31,9 +31,14 @@ const createUniversalProfile = async (universalProfileOwner, blockBuzz) => {
         await executeCallThroughKeyManager("register");
 
         const eventFilter = blockBuzz.filters.UserRegistered();
+
         const events = await blockBuzz.queryFilter(eventFilter);
 
         const ProfileDataInterface = new ethers.utils.Interface(ProfileDataABI);
+
+        console.log("here", events[events.length-1].args.socialProfileData, ProfileDataInterface, universalProfileOwner);
+
+
         return new ethers.Contract(events[events.length-1].args.socialProfileData, ProfileDataInterface, universalProfileOwner);
     };
 

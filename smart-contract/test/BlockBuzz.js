@@ -21,7 +21,7 @@ const {
 
 describe("", () => {
   const deployFixture = async () => {
-    const constructorParam = ethers.getBytes(
+    const constructorParam = ethers.utils.arrayify(
       "0x6f357c6ad575b7fd3a648e998af8851efb8fc396805b73a3f72016df79dfedce79c76a53697066733a2f2f516d6563726e6645464c4d64573642586a4a65316e76794c6450655033435967516258774e6d593850374c666553"
     );
     const deployedBlockBuzzWithLinkedLibraries =
@@ -302,7 +302,7 @@ describe("", () => {
         )
       ).to.hexEqual(post.address);
       expect(
-        ethers.getBytes(
+        ethers.utils.arrayify(
           await post["getData(bytes32)"](
             BlockBuzzConstants.ERC725YKeys.LSP8Custom.TokenId.Metadata
               .PostContent
@@ -359,22 +359,38 @@ describe("", () => {
   });
 
   describe("function commentPost(bytes calldata _content, address _targetPost) external onlyRegisteredUser(msg.sender) onlyValidPost(_targetPost) returns (address)", () => {
-    it("Should create a post of type COMMENT and emit 'UserCreatedPost' event", async () => {
+    it.only("Should create a post of type COMMENT and emit 'UserCreatedPost' event", async () => {
       const { blockBuzz, accounts, randomPostContent } = await loadFixture(
         deployFixture
       );
 
+      console.log("simi, the fukk")
+
       const socialProfile = await accounts[0].register();
-      const referencedPost = await accounts[0].createStandalonePost(
-        randomPostContent,
-        []
+
+      console.log("socialProfile", socialProfile)
+
+      const referencedPost = await accounts[0].createPost(
+        randomPostContent
       );
+
+      console.log("simi)")
+
+      console.log("referencedPost", referencedPost.address)
+
+      console.log(accounts[0].executeCallThroughKeyManager(
+        "comment",
+        randomPostContent,
+        referencedPost.address
+      ))
+
+      console.log("simi215421)")
+
 
       await expect(
         accounts[0].executeCallThroughKeyManager(
-          "commentPost",
+          "comment",
           randomPostContent,
-          [],
           referencedPost.address
         )
       )
@@ -386,6 +402,9 @@ describe("", () => {
           anyValue,
           anyValue
         );
+
+        console.log("simi")
+
 
       const eventFilter = blockBuzz.filters.UserCreatedPost();
       const events = await blockBuzz.queryFilter(eventFilter);
@@ -421,7 +440,7 @@ describe("", () => {
         )
       ).to.hexEqual(post.address);
       expect(
-        ethers.getBytes(
+        ethers.utils.arrayify(
           await post["getData(bytes32)"](
             BlockBuzzConstants.ERC725YKeys.LSP8Custom.TokenId.Metadata
               .PostContent

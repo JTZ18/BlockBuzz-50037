@@ -1,11 +1,13 @@
 require("@nomicfoundation/hardhat-toolbox");
-require("@nomicfoundation/hardhat-ethers");
+require("hardhat-contract-sizer");
+require("@openzeppelin/hardhat-upgrades");
+require("hardhat-deploy");
 require("dotenv").config();
 
 // Add Web3Provider to HRE
 // eslint-disable-next-line no-undef
 extendEnvironment(async (hre) => {
-  hre.Web3Provider = new hre.ethers.BrowserProvider(
+  hre.Web3Provider = new hre.ethers.providers.Web3Provider(
     hre.network.provider
   );
 });
@@ -35,10 +37,10 @@ module.exports = {
   solidity: {
     version: "0.8.19",
     settings: {
-        optimizer: {
-            enabled: true,
-            runs: 10000,
-        },
+      optimizer: {
+        enabled: true,
+        runs: 10000,
+      },
     },
   },
   gasReporter: {
