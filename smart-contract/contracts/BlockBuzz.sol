@@ -234,7 +234,7 @@ contract BlockBuzz is
         IProfileData(registeredUsers[_profileAddress]).addFollower(
             msg.sender
         );
-        emit UserUnfollowedUser(msg.sender, _profileAddress, block.timestamp);
+        emit UserFollowedUser(msg.sender, _profileAddress, block.timestamp);
     }
 
     /**

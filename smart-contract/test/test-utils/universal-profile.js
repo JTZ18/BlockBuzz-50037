@@ -36,10 +36,7 @@ const createUniversalProfile = async (universalProfileOwner, blockBuzz) => {
 
         const ProfileDataInterface = new ethers.utils.Interface(ProfileDataABI);
 
-        console.log("here", events[events.length-1].args.socialProfileData, ProfileDataInterface, universalProfileOwner);
-
-
-        return new ethers.Contract(events[events.length-1].args.socialProfileData, ProfileDataInterface, universalProfileOwner);
+        return new ethers.Contract(events[events.length-1].args.profileDataAddress, ProfileDataInterface, universalProfileOwner);
     };
 
     const createPost = async (postContentData = []) => {

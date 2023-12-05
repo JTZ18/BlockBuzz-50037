@@ -19,7 +19,7 @@ const {
   getOwnerAndUniversalProfiles,
 } = require("./test-utils/universal-profile");
 
-describe("", () => {
+describe("BlockBuzz", () => {
   const deployFixture = async () => {
     const constructorParam = ethers.utils.arrayify(
       "0x6f357c6ad575b7fd3a648e998af8851efb8fc396805b73a3f72016df79dfedce79c76a53697066733a2f2f516d6563726e6645464c4d64573642586a4a65316e76794c6450655033435967516258774e6d593850374c666553"
@@ -27,7 +27,7 @@ describe("", () => {
     const deployedBlockBuzzWithLinkedLibraries =
       await deployBlockBuzzWithLinkedLibraries(constructorParam);
 
-    const ownerAndUniversalProfiles = await getOwnerAndUniversalProfiles(
+      const ownerAndUniversalProfiles = await getOwnerAndUniversalProfiles(
       deployedBlockBuzzWithLinkedLibraries.blockBuzz
     );
 
@@ -73,7 +73,7 @@ describe("", () => {
       );
 
       await accounts[0].register();
-      const post = await accounts[0].createStandalonePost(randomPostContent);
+      const post = await accounts[0].createPost(randomPostContent);
 
       const socialProfile = await accounts[1].register();
       await expect(
@@ -92,7 +92,7 @@ describe("", () => {
       const { accounts, randomPostContent } = await loadFixture(deployFixture);
 
       await accounts[0].register();
-      const post = await accounts[0].createStandalonePost(randomPostContent);
+      const post = await accounts[0].createPost(randomPostContent);
 
       await accounts[1].register();
       await accounts[1].executeCallThroughKeyManager("likePost", post.address);
@@ -144,7 +144,7 @@ describe("", () => {
     });
   });
 
-  describe("function follow(address _userAddress) external onlyRegisteredUser(msg.sender) onlyRegisteredUser(_user) onlyNotFollowedUser(msg.sender, _user)", () => {
+  describe("function followUser(address _userAddress) external onlyRegisteredUser(msg.sender) onlyRegisteredUser(_user) onlyNotFollowedUser(msg.sender, _user)", () => {
     it("Should add subscription and emit 'UserFollowedUser' event if user has not already followed the target user", async () => {
       const { blockBuzz, accounts } = await loadFixture(deployFixture);
 
@@ -255,8 +255,7 @@ describe("", () => {
       await expect(
         accounts[0].executeCallThroughKeyManager(
           "createPost",
-          randomPostContent,
-          []
+          randomPostContent
         )
       )
         .to.emit(blockBuzz, "UserCreatedPost")
@@ -288,7 +287,7 @@ describe("", () => {
       expect(
         ethers.utils.hexDataSlice(
           await post["getData(bytes32)"](
-            Constants.ERC725YKeys.LSP8.TokenId.Metadata.MintedBy
+            BlockBuzzConstants.ERC725YKeys.LSP8.TokenId.Metadata.MintedBy
           ),
           12
         )
@@ -323,8 +322,7 @@ describe("", () => {
       await expect(
         accounts[0].executeCallThroughKeyManager(
           "createPost",
-          randomPostContent,
-          []
+          randomPostContent
         )
       )
         .to.emit(blockBuzz, "Transfer")
@@ -359,37 +357,19 @@ describe("", () => {
   });
 
   describe("function commentPost(bytes calldata _content, address _targetPost) external onlyRegisteredUser(msg.sender) onlyValidPost(_targetPost) returns (address)", () => {
-    it.only("Should create a post of type COMMENT and emit 'UserCreatedPost' event", async () => {
+    it("Should create a post of type COMMENT and emit 'UserCreatedPost' event", async () => {
       const { blockBuzz, accounts, randomPostContent } = await loadFixture(
         deployFixture
       );
 
-      console.log("simi, the fukk")
-
       const socialProfile = await accounts[0].register();
-
-      console.log("socialProfile", socialProfile)
-
       const referencedPost = await accounts[0].createPost(
         randomPostContent
       );
 
-      console.log("simi)")
-
-      console.log("referencedPost", referencedPost.address)
-
-      console.log(accounts[0].executeCallThroughKeyManager(
-        "comment",
-        randomPostContent,
-        referencedPost.address
-      ))
-
-      console.log("simi215421)")
-
-
       await expect(
         accounts[0].executeCallThroughKeyManager(
-          "comment",
+          "commentPost",
           randomPostContent,
           referencedPost.address
         )
@@ -402,9 +382,6 @@ describe("", () => {
           anyValue,
           anyValue
         );
-
-        console.log("simi")
-
 
       const eventFilter = blockBuzz.filters.UserCreatedPost();
       const events = await blockBuzz.queryFilter(eventFilter);
@@ -458,9 +435,8 @@ describe("", () => {
 
       expect(await blockBuzz.totalSupply()).to.equal(0);
 
-      const referencedPost = await accounts[0].createStandalonePost(
-        randomPostContent,
-        []
+      const referencedPost = await accounts[0].createPost(
+        randomPostContent
       );
 
       expect(await blockBuzz.totalSupply()).to.equal(1);
@@ -469,7 +445,6 @@ describe("", () => {
         accounts[0].executeCallThroughKeyManager(
           "commentPost",
           randomPostContent,
-          [],
           referencedPost.address
         )
       )
@@ -512,7 +487,6 @@ describe("", () => {
         accounts[0].executeCallThroughKeyManager(
           "commentPost",
           randomPostContent,
-          [],
           accounts[1].universalProfileAddress
         )
       ).to.be.revertedWith(

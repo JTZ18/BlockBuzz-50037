@@ -82,6 +82,7 @@ const Errors = {
       UserLikedPost: "User has already liked the post",
       UserNotFollower: "User is not a follower yet",
       UserIsFollower: "User is already a follower",
+      PostAddressNotValid: "Post address is not pointing to a valid post (Post interface not available)",
   },
   Post: {
       constructor: {

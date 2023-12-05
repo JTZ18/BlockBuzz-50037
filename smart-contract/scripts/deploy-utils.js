@@ -6,7 +6,7 @@ const deployLSP2KeyUtil = async () => {
     const deployedLSP2KeyUtil = await LSP2KeyUtil.deploy();
     await deployedLSP2KeyUtil.deployed();
     console.log(deployedLSP2KeyUtil.address)
-    console.log("Successfully deployed LSP2KeyUtil: ", deployedLSP2KeyUtil.address);
+    console.log("Successfully deployed LSP2KeyUtil:", deployedLSP2KeyUtil.address);
     return deployedLSP2KeyUtil;
 };
 
@@ -29,7 +29,7 @@ const deployPostFactory = async (deployedLSP2KeyUtil) => {
     console.log("Start deploying PostFactory");
     const deployedPostFactory = await PostFactory.deploy();
     await deployedPostFactory.deployed();
-    console.log("Successfully deployed PostFactory: ", deployedPostFactory.address);
+    console.log("Successfully deployed PostFactory:", deployedPostFactory.address);
     return deployedPostFactory;
 };
 
@@ -64,7 +64,7 @@ const deployProfileDataFactory = async (deployedLSP2KeyUtil) => {
     console.log("Start deploying ProfileDataFactory");
     const deployedProfileDataFactory = await ProfileDataFactory.deploy();
     await deployedProfileDataFactory.deployed();
-    console.log("Successfully deployed ProfileDataFactory: ", deployedProfileDataFactory.address);
+    console.log("Successfully deployed ProfileDataFactory:", deployedProfileDataFactory.address);
     return deployedProfileDataFactory;
 };
 
@@ -100,7 +100,7 @@ const deployBlockBuzz = async (constructorParam, deployedPostFactory, deployedPr
     console.log("Start deploying BlockBuzz");
     const deployedBlockBuzz = await BlockBuzz.deploy(constructorParam);
     await deployedBlockBuzz.deployed();
-    console.log("Successfully deployed BlockBuzz: ", deployedBlockBuzz.address);
+    console.log("Successfully deployed BlockBuzz:", deployedBlockBuzz.address);
     return deployedBlockBuzz;
 };
 
