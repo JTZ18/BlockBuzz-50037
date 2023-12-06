@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useState } from "react";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import PostCard from "@/app/components/ui/PostCard";
 import { Post } from "@/app/types/types";
 import { SocialNetworkPost } from "../types/SocialNetworkPost";
@@ -8,19 +8,90 @@ import { Page } from "../types/Page";
 import { SocialNetwork } from "../utils/social-network";
 import _ from "lodash";
 import { Button } from "./ui/button";
+import usePullToRefresh from "../hooks/usePullToRefresh";
+import { Skeleton } from "./ui/skeleton";
+import { Input } from "@/app/components/ui/input"
+import { Label } from "@/app/components/ui/label"
+import AddComment from "./AddComment";
+import { AddPost } from "./AddPost";
+
+// const posts = [
+//   {
+//     address: '1',
+//     author: '0x0000000000000000000000000000000000000001',
+//     profileName: 'JohnDOes',
+//     profileImage: [
+//       {
+//         url: "https://www.nawpic.com/media/2020/desktop-backgrounds-nawpic-15.jpg"
+//       }
+//     ],
+//     content: 'This is the content of the first post.',
+//     type: 0,
+//     timestamp: Date.now(),
+//     image: [
+//       {
+//         url:'https://www.nawpic.com/media/2020/desktop-backgrounds-nawpic-15.jpg'
+//       }
+//     ],
+//     likes: 3,
+//     comments: 5,
+//     shares: 0,
+//     taggedUsers: ["nil"],
+//     referencedPost: "0x0000000000000000000000000000000000000000"
+//   },
+//   {
+//     address: '2',
+//     author: '0x0000000000000000000000000000000000000002',
+//     profileName: 'Jane',
+//     profileImage: [
+//       {
+//         url: "https://www.nawpic.com/media/2020/desktop-backgrounds-nawpic-15.jpg"
+//       }
+//     ],
+//     content: 'This is the content of the second post.',
+//     type: 0,
+//     timestamp: Date.now(),
+//     image: [],
+//     likes: 3,
+//     comments: 5,
+//     shares: 0,
+//     taggedUsers: ["nil"],
+//     referencedPost: "0x0000000000000000000000000000000000000000"
+//   },
+//   {
+//     address: '3',
+//     author: '0x0000000000000000000000000000000000000003',
+//     profileName: 'JohnnyBoy',
+//     profileImage: [
+//       {
+//         url: "https://www.nawpic.com/media/2020/desktop-backgrounds-nawpic-15.jpg"
+//       }
+//     ],
+//     content: 'This is the content of the third post.',
+//     type: 0,
+//     timestamp: Date.now(),
+//     image: [
+//       {
+//         url:'https://www.nawpic.com/media/2020/desktop-backgrounds-nawpic-15.jpg'
+//       }
+//     ],
+//     likes: 3,
+//     comments: 5,
+//     shares: 0,
+//     taggedUsers: ["nil"],
+//     referencedPost: "0x0000000000000000000000000000000000000000"
+//   },
+// ];
 
 interface PostListProps {
   // items: Post[];
-  items: (SocialNetworkPost | null)[] | undefined;
+  // items: (SocialNetworkPost | null)[] | undefined;
 }
 
-const PostList: React.FC<PostListProps> = ({ items }) => {
+const PostList: React.FC<PostListProps> = ({  }) => {
   const [posts, setPosts] = useState<(SocialNetworkPost | null)[]>([]);
+  const [isLoading, setIsLoading] = useState(false)
   const { getPost } = useContext(CachedProfilesAndPostsContext);
-
-  const getBlockBuzzPosts = async () => {
-    // get all posts in the blockbuzz dapp
-  };
 
   const fetchPostAddresses = async (): Promise<null | Page<string>> => {
     const page: Page<string> = {
@@ -50,31 +121,51 @@ const PostList: React.FC<PostListProps> = ({ items }) => {
 
   // run get postsData from addresses
   const getPosts = async () => {
+    setIsLoading(true);
+    console.log("I'm clicked");
     const page = await fetchPostAddresses();
+    console.log(page);
     if (page?.items) {
       const addresses = Object.values(page.items);
-      const postsData = await Promise.all(
-        addresses.map((address) => getPost(address))
-      );
-      setPosts(postsData);
+      console.log("addresses: " + addresses);
+
+      try {
+        // Map each address to a getPost promise
+        const promises = addresses.map(address => getPost(address));
+        // Wait for all promises to resolve
+        const retrievedPostsArray = await Promise.all(promises);
+        // Set the state with all retrieved posts
+        setPosts(retrievedPostsArray);
+        console.log("postsData: ", retrievedPostsArray);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        // Handle any errors that occurred during fetch
+      }
     }
+    setIsLoading(false);
   };
+
+  usePullToRefresh(getPosts)
 
   useEffect(() => {
     getPosts();
-    console.log(posts); // TODO: fix these throwing errors when getting posts to show up on users main feed
+    // console.log(posts); // TODO: fix these throwing errors when getting posts to show up on users main feed
   }, []);
 
   // run get postsData from addresses
 
   return (
-    <div className="flex items-center justify-center space-y-4 mt-4">
-      <div className="grid grid-cols-1 gap-4">
-        <Button onClick={getPosts}>get post</Button>
-        {items?.map((item) => (
+    <div className="flex flex-col items-center justify-center space-y-4 mt-4">
+      {/* <Button onClick={getPosts}>Get Posts</Button> */}
+      <AddPost />
+
+      <div className="grid grid-col-1 gap4">
+        {posts?.map((item) => (
           <PostCard key={item?.address} data={item} />
         ))}
       </div>
+      
+      {isLoading && (<Skeleton className="aspect-square rounded-xl w-full"/>)}
     </div>
   );
 };

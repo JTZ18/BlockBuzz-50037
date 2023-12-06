@@ -45,6 +45,7 @@ const CachedProfilesAndPostsContextProvider = ({
     address: string,
     ignoreCache?: boolean
   ): Promise<null | SocialNetworkPost> => {
+    console.log('enter getPost')
     if (posts[address] && !ignoreCache) return posts[address];
     const post = await fetchPost(address);
     if (post) {
@@ -56,6 +57,7 @@ const CachedProfilesAndPostsContextProvider = ({
 
     return post;
   };
+
 
   const getProfileFromCache = (address: string) => profiles[address] ?? null;
 
@@ -96,6 +98,18 @@ const CachedProfilesAndPostsContextProvider = ({
     setPosts(newPosts);
   };
 
+  const refetchPost = async (address: string) => {
+    console.log('enter refetchPost WOOOO')
+    const newPost = await fetchPost(address);
+    console.log('newPost', newPost)
+    if (newPost) {
+      setPosts((posts) => ({
+        ...posts,
+        [address]: newPost,
+      }));
+    }
+  }
+
   const refetchAll = async () => {
     await refetchProfiles();
     await refetchPosts();
@@ -104,6 +118,7 @@ const CachedProfilesAndPostsContextProvider = ({
   const value: CachedProfilesAndPostsContextValue =
     useMemo<CachedProfilesAndPostsContextValue>(
       () => ({
+        posts,
         getProfile,
         getPost,
         getProfileFromCache,
@@ -115,6 +130,7 @@ const CachedProfilesAndPostsContextProvider = ({
         refetchAll,
         refetchPosts,
         refetchProfiles,
+        refetchPost
       }),
       [profiles, posts]
     );

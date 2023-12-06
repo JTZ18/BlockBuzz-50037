@@ -47,13 +47,15 @@ const posts = [
 export default async function Home() {
 
   // const posts = await getPosts()
-  // const posts = fetchPosts()
+  // const posts = await fetchPosts()
+  // console.log(posts);
+  //PostList items={posts} />
 
   return (
     <Container>
       <div className="space-y-10 pb-10">
         <div className="flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8">
-          <PostList items={posts} />
+          <PostList />
         </div>
       </div>
     </Container>

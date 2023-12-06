@@ -14,10 +14,13 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/app/components/ui/avatar";
+import { Badge } from "@/app/components/ui/badge"
 import LikeButton from "./LikeButton";
 import AddComment from "../AddComment";
 import CommentsList from "../CommentsList";
 import { SocialNetworkPost } from "@/app/types/SocialNetworkPost";
+import { Separator } from "./separator";
+import FollowButton from "./FollowButton";
 
 interface PostCard {
   // data: Post;
@@ -25,26 +28,27 @@ interface PostCard {
 }
 
 const PostCard: React.FC<PostCard> = ({ data }) => {
+  if (data?.referencedPost != "") { return null;}
   return (
-    <Link
-      href="/"
-      className="outline-0 focus:ring-2 hover:ring-2 ring-primary transition duration-300 rounded-lg"
+    <div
+      className="outline-0 focus:ring-2 hover:ring-2 ring-primary transition duration-300 rounded-lg w-full my-4"
     >
       <Card className="rounded-lg border-2 p-5">
         <CardContent className="flex">
           <div className="mr-6">
             <Avatar>
               <AvatarImage src={data?.profileImage?.[0].url} />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback>{data?.profileName.slice(0,2).toUpperCase()}</AvatarFallback>
             </Avatar>
           </div>
 
-          <div className="flex">
+          <div className="flex w-full justify-between">
             <div className="flex flex-col">
-              <p className="font-semibold text-lg">{data?.author}</p>
-              <p className="text-sm text-primary/80">{data?.content}</p>
+              <p className="font-semibold text-lg">{data?.profileName}</p>
+              <p className="text-sm text-primary/80">{`${data?.author.slice(0, 6)}...${data?.author.slice(-4)}`}</p>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <FollowButton post={data} />
               {/* {data?.timestamp} */}
             </div>
           </div>
@@ -64,12 +68,16 @@ const PostCard: React.FC<PostCard> = ({ data }) => {
         </CardDescription>
 
         <CardFooter className="flex flex-col mt-4 items-start">
-          <LikeButton/>
-          <CommentsList/>
-          <AddComment />
+          <div className='flex flex-row items-center justify-between w-full'>
+            <p className="text-sm text-primary/80">{data?.content}</p>
+            <LikeButton post={data}/>
+          </div>
+          <Separator className="my-4"/>
+          <CommentsList referencePostAddress={data?.address}/>
+          <AddComment post={data}/>
         </CardFooter>
       </Card>
-    </Link>
+    </div>
   );
 };
 

@@ -152,7 +152,8 @@ export const initAuthenticatedProfile = async (
 };
 
 export const fetchProfile = async (
-  address: string
+  address: string,
+  isInProfilePage?: boolean
 ): Promise<null | SocialNetworkProfile> => {
   if (!ethers.utils.isAddress(address)) return null;
 
@@ -164,7 +165,7 @@ export const fetchProfile = async (
       { ipfsGateway: IPFS_GATEWAY }
     );
 
-    let profile: any = await contract.fetchData("LSP3Profile");
+  let profile: any = await contract.fetchData("LSP3Profile");
     profile = {
       address,
       ...(profile?.value?.LSP3Profile ?? {}),
@@ -174,14 +175,17 @@ export const fetchProfile = async (
       profile.profileImage = getImagesWithIPFSGateway(profile.profileImage);
     }
 
-    if (profile.backgroundImage) {
-      profile.backgroundImage = getImagesWithIPFSGateway(
-        profile.backgroundImage
-      );
-    }
+  // only do this when in profile page
+    if (isInProfilePage) {
+      if (profile.backgroundImage) {
+        profile.backgroundImage = getImagesWithIPFSGateway(
+          profile.backgroundImage
+        );
+      }
 
-    profile.socialProfileStats =
-      await fetchSocialProfileStatsByUniversalProfileAddress(address);
+      profile.socialProfileStats =
+        await fetchSocialProfileStatsByUniversalProfileAddress(address);
+  }
 
     return profile as SocialNetworkProfile;
   } catch (e) {

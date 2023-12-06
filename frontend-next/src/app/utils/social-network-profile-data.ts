@@ -59,11 +59,11 @@ export const fetchSocialProfileStatsByUniversalProfileAddress = async (
     const keys = getKeysForNamesFromSchema(
       SocialNetworkProfileDataERC725YJSONSchema,
       [
-        "SNPosts[]",
+        "SNPosts[]", // TODO: may not need to do this fetch, optimise on time
         "SNLikes[]",
         "SNSubscriptions[]",
         "SNSubscribers[]",
-        "SNUserTags[]",
+        // "SNUserTags[]",
       ]
     );
     const socialNetworkProfileData = await socialNetworkProfileDataContract[

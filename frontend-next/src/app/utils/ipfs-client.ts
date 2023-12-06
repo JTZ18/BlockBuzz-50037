@@ -16,7 +16,9 @@ import type { Image } from "../types/Image";
 const KECCAK_256_HASH_FUNCTION = "0x6f357c6a";
 // https://2eff.lukso.dev/ipfs
 // https://api.2eff.lukso.dev/api/v0/add?stream-channels=true&pin=true&progress=false
-export const ipfsClient: IPFSHTTPClient = create({ url: IPFS_UPLOAD_GATEWAY });
+export const ipfsClient: IPFSHTTPClient = create({
+  url: IPFS_UPLOAD_GATEWAY,
+});
 
 // see https://github.com/lukso-network/LIPs/blob/main/LSPs/LSP-2-ERC725YJSONSchema.md#JSONURL
 export const getLSP2JSONURL = (json: Object, ipfsURL: string): string => {

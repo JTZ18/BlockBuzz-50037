@@ -42,17 +42,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-
-{/* <CachedProfilesAndPostsContextProvider>
-<EthersContextProvider>
-  <App />
-  <ToastContainer
-      style={{ cursor: "default" }}
-      autoClose={15000}
-      theme="colored"
-      closeOnClick={false}
-      pauseOnFocusLoss={false}
-    />
-</EthersContextProvider>
-</CachedProfilesAndPostsContextProvider> */}
