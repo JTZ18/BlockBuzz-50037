@@ -6,11 +6,11 @@ import PostList from './components/PostList'
 import Loading from './loading'
 import { ThirdwebProvider } from './components/ThirdwebProvider';
 import { SocialNetwork } from './utils/social-network'
-import { Page } from './types/Page'
 import _ from "lodash";
 import { SocialNetworkPost } from './types/SocialNetworkPost'
 import { fetchPost } from './utils/social-network-post'
 import { fetchPosts } from './lib/data'
+import { AddPost } from './components/AddPost'
 
 
 const posts = [
@@ -55,6 +55,9 @@ export default async function Home() {
     <Container>
       <div className="space-y-10 pb-10">
         <div className="flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8">
+          <div className='flex w-full items-center justify-center mt-6'>
+            <AddPost classNameButton='max-w-sm' />
+          </div>
           <PostList />
         </div>
       </div>

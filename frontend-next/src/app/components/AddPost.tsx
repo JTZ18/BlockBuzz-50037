@@ -45,7 +45,11 @@ const FormSchema = z.object({
   image: z.instanceof(File).optional()
 })
 
-export function AddPost() {
+interface Props {
+  classNameButton?: string;
+}
+
+export function AddPost({ classNameButton = '' }: Props) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   })
@@ -112,13 +116,13 @@ export function AddPost() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">Create Post</Button>
+        <Button variant="default" className={`${classNameButton}`}>Create Post</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create a post</DialogTitle>
           <DialogDescription>
-            Write your thoughts here. Click post when you're done
+            {`Write your thoughts here. Click post when you're done`}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

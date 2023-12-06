@@ -25,7 +25,7 @@ import { SocialNetwork } from "./social-network";
 // Helper
 import { fetchProfile, getSocialNetworkProfileDataAddress } from "./universal-profile";
 import { uploadJSONToIPFSAndGetLSP2JSONURL } from "./ipfs-client";
-import { fetchPage } from "./page";
+import { fetchPage } from "./Page";
 import _ from "lodash";
 
 // Types
@@ -34,7 +34,7 @@ import type {
   SocialNetworkPost,
   SocialNetworkPostStats,
 } from "../types/SocialNetworkPost";
-import type { Page } from "@/app/components/PagedList/PagedList";
+import type { Page } from "@/app/types/Page";
 
 export const createSocialNetworkPostContract = (
   address: string

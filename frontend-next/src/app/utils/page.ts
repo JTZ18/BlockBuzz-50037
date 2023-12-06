@@ -3,12 +3,13 @@ import { ethers } from "ethers";
 
 // Types
 import type { ERC725JSONSchema } from "@erc725/erc725.js";
-import type { Page } from "../components/PagedList/PagedList";
+import { Page } from "@/app/types/Page.d";
 
 // Helper
 import { getKeysForNamesFromSchema } from "../contracts/SocialNetworkConstants";
 import _ from "lodash";
 
+// @ts-ignore
 export const fetchPage = async (
   contract: ethers.Contract,
   schema: ERC725JSONSchema[],
@@ -49,7 +50,7 @@ export const fetchPage = async (
     const arrayIndexKeys = _.range(
       startIndex + 1, // 0 is sentinel value in custom ERC725YEnumerableSet so we need to increment the startIndex by one
       startIndex + 1 + page.itemCount
-    ).map((index) => `${arrayNameWithoutBraces}[${index}]`);
+    ).map((index: any) => `${arrayNameWithoutBraces}[${index}]`);
 
     keys = getKeysForNamesFromSchema(schema, arrayIndexKeys);
     const arrayValues: string[] = await contract["getData(bytes32[])"](keys);

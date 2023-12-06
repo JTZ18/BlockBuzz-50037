@@ -6,7 +6,6 @@ import { SocialNetworkPost } from '../types/SocialNetworkPost';
 import { SocialNetwork } from '../utils/social-network';
 import _ from 'lodash';
 import CachedProfilesAndPostsContext from '../context/CachedProfilesAndPostsContext/CachedProfilesAndPostsContext';
-import { Page } from '../types/Page';
 import { usePosts } from '../context/CachedProfilesAndPostsContext/usePosts';
 
 interface CommentListProps {

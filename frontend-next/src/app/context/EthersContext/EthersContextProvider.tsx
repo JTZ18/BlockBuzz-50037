@@ -203,6 +203,7 @@ const EthersContextProvider: FC<Props> = ({ children }) => {
       setLoading(false);
       // set localStorage to true
       localStorage.setItem("isUniversalProfileExtension", "true");
+      // localStorage.setItem("isAuthenticated", "true"); // Store the authenticated state
     } catch (error) {
       const { code, message } = error as MyError;
       if (code === REQUESTING_PENDING) {
@@ -218,7 +219,10 @@ const EthersContextProvider: FC<Props> = ({ children }) => {
     }
   };
 
-  const logout = () => setUniversalProfile(null);
+  const logout = () => {
+    setUniversalProfile(null);
+    // localStorage.removeItem("isAuthenticated"); // Clear the authentication state
+  };
 
   useEffect(() => {
     if (!provider) return;
@@ -234,6 +238,13 @@ const EthersContextProvider: FC<Props> = ({ children }) => {
       provider!.removeAllListeners("network");
     };
   }, []);
+
+  // useEffect(() => {
+  //   const isUserAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  //   if (isUserAuthenticated) {
+  //     connectUniversalProfile(); // Re-establish the connection based on the stored state
+  //   }
+  // }, []);
 
   const value: EthersContextValue = useMemo<EthersContextValue>(
     () => ({

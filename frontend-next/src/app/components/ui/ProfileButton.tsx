@@ -11,6 +11,7 @@ import {
 import { IWeb3Context, useWeb3Context } from '../../context/Web3Context'
 import { Avatar, AvatarFallback, AvatarImage } from "@/app/components/ui/avatar";
 import EthersContext from "@/app/context/EthersContext/EthersContext";
+import Link from "next/link";
 
 const ProfileButton = () => {
   // const {
@@ -30,7 +31,7 @@ const ProfileButton = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" ><Link href={`/profile/${universalProfile?.address}`}>Profile</Link></DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer">Billing</DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer">Subscription</DropdownMenuItem>
         <DropdownMenuSeparator />

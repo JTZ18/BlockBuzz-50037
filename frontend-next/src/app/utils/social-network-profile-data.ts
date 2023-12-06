@@ -16,11 +16,11 @@ import {
 // Helper
 import _ from "lodash";
 import { getSocialNetworkProfileDataAddress } from "./universal-profile";
-import { fetchPage } from "./page";
+import { fetchPage } from "./Page";
 
 // Types
 import type { SocialProfileStats } from "../types/SocialProfileStats";
-import type { Page } from "../components/PagedList/PagedList";
+import type { Page } from "@/app/types/Page";
 
 export const createSocialNetworkProfileDataContract = (
   address: string

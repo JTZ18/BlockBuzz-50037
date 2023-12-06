@@ -25,76 +25,54 @@ const FollowButton: React.FC<Props> = ( { post } ) => {
   universalProfile?.socialProfileStats &&
   currentPost?.author.toLowerCase() !== universalProfile?.address.toLowerCase();
 
-  const fetchFollowStatus = async () => {
-    if (!authenticated) return;
-    console.log('enter follow status')
+  useEffect(() => {
+    if (!authenticated) return
+    // Function to fetch follow status
+    const fetchFollowStatus = async () => {
+      if (authenticated) {
+        try {
+          const isFollowed = await universalProfile?.socialNetworkProfileDataContract?.isSubscriberOf(post.author);
+          setFollowed(isFollowed);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    };
+
+    fetchFollowStatus();
+  }, [post, authenticated, universalProfile]);
+
+
+  const handleFollow = async () => {
+    if (!authenticated || followed) return;
+    setLoading(true);
+
     try {
-      setFollowed(
-        await universalProfile?.socialNetworkProfileDataContract?.isSubscriberOf(
-          currentPost.author
-        )
-      );
+      const tx = await SocialNetwork.connect(provider.getSigner()).subscribeUser(post.author);
+      await tx.wait();
+      setFollowed(true);
     } catch (e) {
       console.error(e);
     }
+
+    setLoading(false);
   };
 
-  const handleFollow = async () => {
-    if (!authenticated) return;
-    setLoading(true)
-    try{
-      if (
-        await universalProfile?.socialNetworkProfileDataContract?.isSubscriberOf(
-          currentPost.author
-        )
-      ) {
-        setFollowed(true);
-        setLoading(false)
-        return;
-      }
-      const tx = await SocialNetwork.connect(provider.getSigner()).subscribeUser(
-        currentPost.author
-      );
-      await tx.wait();
-      await fetchFollowStatus();
-      // setFollowed(prev => !prev);
-      setLoading(false)
-    } catch (e) {
-      setLoading(false);
-    }
-  }
   const handleUnfollow = async () => {
-    if (!authenticated) return;
-    setLoading(true)
-    try{
-      if (
-        !(await universalProfile?.socialNetworkProfileDataContract?.isSubscriberOf(
-          currentPost.author
-        ))
-      ) {
-        setFollowed(false);
-        setLoading(false)
-        return;
-      }
+    if (!authenticated || !followed) return;
+    setLoading(true);
 
-      const tx = await SocialNetwork.connect(provider.getSigner()).unsubscribeUser(
-        currentPost.author
-      );
+    try {
+      const tx = await SocialNetwork.connect(provider.getSigner()).unsubscribeUser(post.author);
       await tx.wait();
-      await fetchFollowStatus()
-      // setFollowed(false);
-      setLoading(false)
+      setFollowed(false);
     } catch (e) {
-      setLoading(false)
+      console.error(e);
     }
-  };
-  useEffect(() => {
-    fetchFollowStatus();
-  }, [post]);
 
-  useEffect(() => {
-    fetchFollowStatus()
-  }, [followed, authenticated]);
+    setLoading(false);
+  };
+  
   return (
     <>
       {loading ? (

@@ -14,6 +14,7 @@ import { Input } from "@/app/components/ui/input"
 import { Label } from "@/app/components/ui/label"
 import AddComment from "./AddComment";
 import { AddPost } from "./AddPost";
+import { usePathname } from "next/navigation";
 
 // const posts = [
 //   {
@@ -86,12 +87,20 @@ import { AddPost } from "./AddPost";
 interface PostListProps {
   // items: Post[];
   // items: (SocialNetworkPost | null)[] | undefined;
+  // profileAddress?: string;
 }
 
-const PostList: React.FC<PostListProps> = ({  }) => {
+const PostList: React.FC<PostListProps> = ({ }) => {
   const [posts, setPosts] = useState<(SocialNetworkPost | null)[]>([]);
   const [isLoading, setIsLoading] = useState(false)
   const { getPost } = useContext(CachedProfilesAndPostsContext);
+  const pathname = usePathname(); // extract profile address from url path if the user is in profile mode
+  const parts = pathname.split('/');
+  let profileAddress: string = ''
+  if ((parts.length == 3) && (parts[1] == 'profile')) {
+    profileAddress = parts[2];
+  };
+
 
   const fetchPostAddresses = async (): Promise<null | Page<string>> => {
     const page: Page<string> = {
@@ -119,15 +128,40 @@ const PostList: React.FC<PostListProps> = ({  }) => {
     return page;
   };
 
+  const fetchPostAddressesOfUser = async (userAddress: string): Promise<null | Page<string>> => {
+    const page: Page<string> = {
+      totalItemCount: 0,
+      itemCount: 0,
+      items: {},
+    };
+    try {
+      const MAIN_POST_TYPE = 0;
+      const eventFilter = SocialNetwork.filters.UserCreatedPost(MAIN_POST_TYPE, userAddress);
+      const events = await SocialNetwork.queryFilter(eventFilter);
+      page.items = _.reverse(
+        events.map((event) => event?.args?.newPost).filter((address) => address)
+      ).reduce(
+        (items: any, item: any, index: any) => ({
+          ...items,
+          [(index + 1).toString()]: item, // increment by 1 since 0 is sentinel value
+        }),
+        {}
+      );
+      page.itemCount = page.totalItemCount = Object.keys(page.items).length;
+    } catch (e) {
+      console.error(e);
+    }
+
+    return page;
+  };
+
   // run get postsData from addresses
   const getPosts = async () => {
     setIsLoading(true);
-    console.log("I'm clicked");
     const page = await fetchPostAddresses();
     console.log(page);
     if (page?.items) {
       const addresses = Object.values(page.items);
-      console.log("addresses: " + addresses);
 
       try {
         // Map each address to a getPost promise
@@ -145,11 +179,39 @@ const PostList: React.FC<PostListProps> = ({  }) => {
     setIsLoading(false);
   };
 
+  const getPostsOfProfile = async () => {
+    if (!profileAddress) return
+    setIsLoading(true);
+    const page = await fetchPostAddressesOfUser( profileAddress );
+    console.log(page);
+    if (page?.items) {
+      const addresses = Object.values(page.items);
+
+      try {
+        // Map each address to a getPost promise
+        const promises = addresses.map(address => getPost(address));
+        // Wait for all promises to resolve
+        const retrievedPostsArray = await Promise.all(promises);
+        // Set the state with all retrieved posts
+        setPosts(retrievedPostsArray);
+        console.log("postsData: ", retrievedPostsArray);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        // Handle any errors that occurred during fetch
+        setIsLoading(false)
+      }
+    }
+    setIsLoading(false);
+  };
+
   usePullToRefresh(getPosts)
 
   useEffect(() => {
+    if (profileAddress) {
+      getPostsOfProfile()
+      return
+    }
     getPosts();
-    // console.log(posts); // TODO: fix these throwing errors when getting posts to show up on users main feed
   }, []);
 
   // run get postsData from addresses
@@ -157,15 +219,16 @@ const PostList: React.FC<PostListProps> = ({  }) => {
   return (
     <div className="flex flex-col items-center justify-center space-y-4 mt-4">
       {/* <Button onClick={getPosts}>Get Posts</Button> */}
-      <AddPost />
 
       <div className="grid grid-col-1 gap4">
         {posts?.map((item) => (
           <PostCard key={item?.address} data={item} />
         ))}
       </div>
-      
-      {isLoading && (<Skeleton className="aspect-square rounded-xl w-full"/>)}
+
+      {isLoading && (<Skeleton className="aspect-[9/16] rounded-xl w-full"/>)}
+      {isLoading && (<Skeleton className="aspect-[9/16] rounded-xl w-full"/>)}
+      {isLoading && (<Skeleton className="aspect-[9/16] rounded-xl w-full"/>)}
     </div>
   );
 };

@@ -21,6 +21,7 @@ import CommentsList from "../CommentsList";
 import { SocialNetworkPost } from "@/app/types/SocialNetworkPost";
 import { Separator } from "./separator";
 import FollowButton from "./FollowButton";
+import { Button } from "./button";
 
 interface PostCard {
   // data: Post;
@@ -35,7 +36,7 @@ const PostCard: React.FC<PostCard> = ({ data }) => {
     >
       <Card className="rounded-lg border-2 p-5">
         <CardContent className="flex">
-          <div className="mr-6">
+          <div className="flex mr-6">
             <Avatar>
               <AvatarImage src={data?.profileImage?.[0].url} />
               <AvatarFallback>{data?.profileName.slice(0,2).toUpperCase()}</AvatarFallback>
@@ -44,7 +45,9 @@ const PostCard: React.FC<PostCard> = ({ data }) => {
 
           <div className="flex w-full justify-between">
             <div className="flex flex-col">
-              <p className="font-semibold text-lg">{data?.profileName}</p>
+              {/* <p className="font-semibold text-lg">{data?.profileName}</p> */}
+              {/* <Button src='/' className="px-0 font-semibold text-lg" variant="link">{data?.profileName}</Button> */}
+              <Link href={`/profile/${data.author}`} className="px-0 font-semibold text-lg text-primary underline-offset-4 hover:underline">{data?.profileName}</Link>
               <p className="text-sm text-primary/80">{`${data?.author.slice(0, 6)}...${data?.author.slice(-4)}`}</p>
             </div>
             <div className="flex items-center">

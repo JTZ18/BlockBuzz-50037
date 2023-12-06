@@ -3,7 +3,7 @@
 import { useState, useEffect, useContext } from "react";
 import type { JSX } from "react";
 import { useTheme } from "next-themes";
-import { useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 // import ButtonSignin from "./ButtonSignin";
@@ -26,12 +26,14 @@ import ConnectWalletButton from "./ConnectWalletButton";
 import { IWeb3Context, useWeb3Context } from '../context/Web3Context'
 import ConnectUniversalProfileButton from "./ConnectUniversalProfileButton";
 import EthersContext from "../context/EthersContext/EthersContext";
+import clsx from "clsx";
 
 
 const Header = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { theme, setTheme } = useTheme()
+  const pathname = usePathname()
 
   // const {
   //   connectWallet,
@@ -75,7 +77,7 @@ const Header = () => {
               </SheetTrigger>
               <SheetContent side="left" className="w-[300px] sm:w-[400px]">
                 <nav className="flex flex-col gap-4">
-                  {routes.map((route, i) => (
+                  {/* {routes.map((route, i) => (
                     <Link
                       key={i}
                       href={route.href}
@@ -83,7 +85,37 @@ const Header = () => {
                     >
                       {route.label}
                     </Link>
-                  ))}
+                  ))} */}
+                    <Link
+                      href={`/`}
+                      className="block px-2 py-1 text-lg"
+                    >
+                      {`Home`}
+                    </Link>
+                    {universalProfile ? (
+                      <Link
+                        href={`/profile/${universalProfile.address}`}
+                        className="block px-2 py-1 text-lg"
+                      >
+                        {`Profile`}
+                      </Link>
+                      ) : (
+                      <span className="block px-2 py-1 text-lg text-gray-500 cursor-not-allowed">
+                        {`Profile`}
+                      </span>
+                    )}
+                    {universalProfile ? (
+                      <Link
+                        href={`/following/${universalProfile.address}`}
+                        className="block px-2 py-1 text-lg"
+                      >
+                        {`Following`}
+                      </Link>
+                      ) : (
+                      <span className="block px-2 py-1 text-lg text-gray-500 cursor-not-allowed">
+                        {`Following`}
+                      </span>
+                    )}
                 </nav>
               </SheetContent>
             </Sheet>
@@ -92,7 +124,7 @@ const Header = () => {
             </Link>
           </div>
           <nav className="mx-6 flex items-center space-x-4 lg:space-x-6 hidden md:block">
-            {routes.map((route, i) => (
+            {/* {routes.map((route, i) => (
               <Button key={i} asChild variant="ghost">
                 <Link
                   key={i}
@@ -102,7 +134,49 @@ const Header = () => {
                   {route.label}
                 </Link>
               </Button>
-            ))}
+            ))} */}
+            <Button asChild variant="ghost">
+              <Link
+                href={`/`}
+                className={clsx("text-sm font-medium transition-colors", {
+                  "underline": pathname === '/'
+                })}
+              >
+                {`Home`}
+              </Link>
+            </Button>
+            <Button asChild variant="ghost">
+              {universalProfile ? (
+                <Link
+                  href={`/profile/${universalProfile.address}`}
+                  className={clsx("text-sm font-medium transition-colors", {
+                    "underline": pathname === `/profile/${universalProfile.address}`
+                  })}
+                >
+                  {`Profile`}
+                </Link>
+              ) : (
+                <span className="text-sm font-medium text-gray-500 cursor-not-allowed">
+                  {`Profile`}
+                </span>
+              )}
+            </Button>
+            <Button asChild variant="ghost">
+              {universalProfile ? (
+                <Link
+                  href={`/following/${universalProfile.address}`}
+                  className={clsx("text-sm font-medium transition-colors", {
+                    "underline": pathname === `/following/${universalProfile.address}`
+                  })}
+                >
+                  {`Following`}
+                </Link>
+              ) : (
+                <span className="text-sm font-medium text-gray-500 cursor-not-allowed">
+                  {`Following`}
+                </span>
+              )}
+            </Button>
           </nav>
           <div className="flex items-center">
             <Button
