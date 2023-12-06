@@ -33,17 +33,6 @@ const deployPostFactory = async (deployedLSP2KeyUtil) => {
     return deployedPostFactory;
 };
 
-const deployPostFactoryTestWithLinkedLibraries = async () => {
-    const deployedLSP2KeyUtil = await deployLSP2KeyUtil();
-    const deployedPostFactory = await deployPostFactory(deployedLSP2KeyUtil);
-    const PostFactoryTest = await ethers.getContractFactory("PostFactoryTest", {
-        libraries: {
-            PostFactory: deployedPostFactory.address,
-        }
-    });
-    return await PostFactoryTest.deploy();
-};
-
 const deployPostWithLinkedLibraries = async (owner, profile, postType, content, referencedPost) => {
     const deployedLSP2KeyUtil = await deployLSP2KeyUtil();
     const Post = await ethers.getContractFactory("Post", {
@@ -66,17 +55,6 @@ const deployProfileDataFactory = async (deployedLSP2KeyUtil) => {
     await deployedProfileDataFactory.deployed();
     console.log("Successfully deployed ProfileDataFactory:", deployedProfileDataFactory.address);
     return deployedProfileDataFactory;
-};
-
-const deployProfileDataFactoryTestWithLinkedLibraries = async () => {
-    const deployedLSP2KeyUtil = await deployLSP2KeyUtil();
-    const deployedProfileDataFactory = await deployProfileDataFactory(deployedLSP2KeyUtil);
-    const ProfileDataFactoryTest = await ethers.getContractFactory("ProfileDataFactoryTest", {
-        libraries: {
-            ProfileDataFactory: deployedProfileDataFactory.address,
-        }
-    });
-    return await ProfileDataFactoryTest.deploy();
 };
 
 const deployProfileDataWithLinkedLibraries = async (owner, user) => {
