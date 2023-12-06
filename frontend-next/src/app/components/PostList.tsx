@@ -84,13 +84,13 @@ import { usePathname } from "next/navigation";
 //   },
 // ];
 
-interface PostListProps {
-  // items: Post[];
-  // items: (SocialNetworkPost | null)[] | undefined;
-  // profileAddress?: string;
-}
+// interface PostListProps {
+//   // items: Post[];
+//   // items: (SocialNetworkPost | null)[] | undefined;
+//   // profileAddress?: string;
+// }
 
-const PostList: React.FC<PostListProps> = ({ }) => {
+const PostList = () => {
   const [posts, setPosts] = useState<(SocialNetworkPost | null)[]>([]);
   const [isLoading, setIsLoading] = useState(false)
   const { getPost } = useContext(CachedProfilesAndPostsContext);

@@ -1,15 +1,8 @@
 import Image from 'next/image'
-import Hero from './components/Hero'
 import Container from './components/ui/container'
-import { Button } from './components/ui/button'
 import PostList from './components/PostList'
-import Loading from './loading'
 import { ThirdwebProvider } from './components/ThirdwebProvider';
-import { SocialNetwork } from './utils/social-network'
 import _ from "lodash";
-import { SocialNetworkPost } from './types/SocialNetworkPost'
-import { fetchPost } from './utils/social-network-post'
-import { fetchPosts } from './lib/data'
 import { AddPost } from './components/AddPost'
 
 

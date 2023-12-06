@@ -32,7 +32,7 @@ interface CommentListProps {
 //   },
 // ];
 
-const CommentsList: React.FC<CommentListProps> = ({ referencePostAddress }) => {
+const CommentsList: React.FC<CommentListProps> = ({ referencePostAddress = '' }) => {
   const [comments, setComments] = useState<(SocialNetworkPost | null)[]>([]);
   const posts = usePosts();
   const postsMap = posts.posts

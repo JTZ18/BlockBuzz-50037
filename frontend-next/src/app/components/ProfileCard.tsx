@@ -24,7 +24,7 @@ import { SocialNetwork } from '../utils/social-network';
 import { Page } from '../types/Page';
 
 
-const ProfileCard = ({ }) => {
+const ProfileCard = () => {
   const [profile, setProfile] = useState<(SocialNetworkProfile | null)>();
   const [numPosts, setNumPosts] = useState(0)
   const [loading, setLoading] = useState(false)
