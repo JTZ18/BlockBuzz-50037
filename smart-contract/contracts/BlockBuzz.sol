@@ -26,7 +26,7 @@ import "./utils/BlockBuzzConstants.sol";
  */
 contract BlockBuzz is
     IBlockBuzz,
-    LSP8IdentifiableDigitalAsset("BlockBuzzPost", "BBP", msg.sender, 2, 1) // TODO: need to find out
+    LSP8IdentifiableDigitalAsset("BlockBuzzPost", "BBP", msg.sender, 2, 1) 
 {
     mapping(address => address) public registeredUsers; // mapping from universal profile to social network profile data
     uint public registeredUserCount = 0; // incremented with each registration
@@ -166,13 +166,6 @@ contract BlockBuzz is
             msg.sender.code.length > 0,
             "User address is an EOA - Only smart contract based accounts are supported"
         );
-
-        // TODO: Find a way to check supportsInterface LSP0ERC725Account instead
-        // require(
-        //     IERC165(msg.sender).supportsInterface(_INTERFACEID_ERC725Y) &&
-        //         IERC165(msg.sender).supportsInterface(_INTERFACEID_ERC725X),
-        //     "User address is not an universal profile (ERC725X and/or ERC725Y interfaces not available)"
-        // );
 
         ++registeredUserCount;
         registeredUsers[msg.sender] = ProfileDataFactory

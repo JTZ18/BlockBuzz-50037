@@ -120,9 +120,7 @@ interface IBlockBuzz is ILSP8IdentifiableDigitalAsset {
      * @notice Create a new post
      * @param _content Content of the post
      */
-    function createPost(bytes calldata _content)
-        external
-        returns (address);
+    function createPost(bytes calldata _content) external returns (address);
 
     /**
      * @notice Comment on a post

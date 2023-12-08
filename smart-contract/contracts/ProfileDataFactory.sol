@@ -4,7 +4,7 @@ import {ProfileData} from "./ProfileData.sol";
 
 /**
  * @title ProfileData Contract Instance Factory
- * @dev Facilitates the creation of new ProfileData contract instances. 
+ * @dev Facilitates the creation of new ProfileData contract instances.
  * This library provides a method to generate individual ProfileData contracts, each linked to a specific user and owned by a specified contract.
  */
 library ProfileDataFactory {
@@ -19,13 +19,7 @@ library ProfileDataFactory {
         address _owner,
         address _profile
     ) public returns (address) {
-        return
-            address(
-                new ProfileData(
-                    _owner,
-                    _profile
-                )
-            );
+        return address(new ProfileData(_owner, _profile));
     }
 }
 

@@ -27,7 +27,7 @@ describe("BlockBuzz", () => {
     const deployedBlockBuzzWithLinkedLibraries =
       await deployBlockBuzzWithLinkedLibraries(constructorParam);
 
-      const ownerAndUniversalProfiles = await getOwnerAndUniversalProfiles(
+    const ownerAndUniversalProfiles = await getOwnerAndUniversalProfiles(
       deployedBlockBuzzWithLinkedLibraries.blockBuzz
     );
 
@@ -43,26 +43,14 @@ describe("BlockBuzz", () => {
 
   describe("function register() external returns (address)", async () => {
     it("Should deploy instance of ProfileData after successful registration", async () => {
-      const { owner, blockBuzz, accounts } = await loadFixture(
-        deployFixture
-      );
+      const { owner, blockBuzz, accounts } = await loadFixture(deployFixture);
 
       await accounts[0].register();
 
-      const ProfileDataAddress =
-        await blockBuzz.registeredUsers(
-          accounts[0].universalProfileAddress
-        );
-      const erc165 = new ethers.Contract(
-        ProfileDataAddress,
-        IERC165ABI,
-        owner
-      );
-      expect(
-        await erc165.supportsInterface(
-          BlockBuzzConstants.INTERFACE_IDS.ProfileData
-        )
-      ).to.be.equal(true);
+      const ProfileDataAddress = await blockBuzz.registeredUsers(accounts[0].universalProfileAddress);
+      const erc165 = new ethers.Contract(ProfileDataAddress, IERC165ABI, owner);
+
+      expect(await erc165.supportsInterface(BlockBuzzConstants.INTERFACE_IDS.ProfileData)).to.be.equal(true);
     });
   });
 

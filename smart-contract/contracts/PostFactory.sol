@@ -18,21 +18,8 @@ library PostFactory {
      * @param _content Post content in LSP2 JSONURL format
      * @return address The address of the newly created Post contract
      */
-    function createPost(
-        address _ownerAddress,
-        address _profileAddress,
-        bytes calldata _content
-    ) public returns (address) {
-        return
-            address(
-                new Post(
-                    _ownerAddress,
-                    _profileAddress,
-                    PostType.MAIN,
-                    _content,
-                    address(0)
-                )
-            );
+    function createPost(address _ownerAddress, address _profileAddress, bytes calldata _content) public returns (address) {
+        return address(new Post(_ownerAddress, _profileAddress, PostType.MAIN, _content, address(0)));
     }
 
     /**

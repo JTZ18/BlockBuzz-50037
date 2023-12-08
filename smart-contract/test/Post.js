@@ -67,7 +67,7 @@ describe("Post", () => {
             expect(await post.owner()).to.eql(accounts[0].address);
         });
 
-        it("Should set the PostContent ERC725Y key value to param _data", async () => {
+        it("Should set the PostContent ERC725Y key value to param _content", async () => {
             const { accounts, createPost, randomPostContent } = await loadFixture(deployFixture);
 
             const post = await createPost(accounts[0].address);
