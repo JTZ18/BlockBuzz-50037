@@ -6,17 +6,18 @@ const nextConfig = {
     domains: ['www.nawpic.com', 'api.universalprofile.cloud'],
   },
   // transpilePackages: ['lucide-react'],
-  // webpack: (config, { isServer }) => {
-  //   if (!isServer) {
-  //     config.resolve.fallback = {
-  //       ...config.resolve.fallback,
-  //       'node-fetch': require.resolve('isomorphic-fetch'),
-  //       'stream': require.resolve('stream-browserify'),
-  //       'util': require.resolve('util'),
-  //     };
-  //   }
-  //   return config;
-  // },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'node-fetch': require.resolve('isomorphic-fetch'),
+        './fetch.node': require.resolve('isomorphic-fetch'),
+        'stream': require.resolve('stream-browserify'),
+        'util': require.resolve('util'),
+      };
+    }
+    return config;
+  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -27,5 +28,6 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['ipfs-utils'],
   },
+trailingSlash: true
 }
 module.exports = nextConfig;
